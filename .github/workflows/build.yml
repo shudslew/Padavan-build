@@ -6,12 +6,13 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - name: Install Dependencies
+      - name: 更换apt国内镜像源，加速依赖安装
         run: |
+          sudo sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
           sudo apt update
           sudo apt install -y build-essential libncurses5-dev git wget curl unzip bzip2 flex bison autoconf automake libtool pkg-config gawk python2
-      - name: Clone rt-n56u source
-        run: git clone https://github.com/chongshengB/rt-n56u.git
+      - name: Clone rt-n56u source(github镜像加速)
+        run: git clone --depth 1 https://github.com/chongshengB/rt-n56u.git
       - name: Modify plugin config
         run: |
           cd rt-n56u/trunk
