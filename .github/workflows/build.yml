@@ -16,17 +16,16 @@ jobs:
       - name: Modify plugin config
         run: |
           cd rt-n56u/trunk
-          sed -i '/CONFIG_FIRMWARE_INCLUDE_PASSWALL/d' build_firmware_modify
-          echo "CONFIG_FIRMWARE_INCLUDE_PASSWALL=y" >> build_firmware_modify
+        
 
           sed -i '/CONFIG_FIRMWARE_INCLUDE_ADBYBY/d' build_firmware_modify
-          echo "CONFIG_FIRMWARE_INCLUDE_ADBYBY=y" >> build_firmware_modify
+          echo "CONFIG_FIRMWARE_INCLUDE_ADBYBY=n" >> build_firmware_modify
 
           sed -i '/CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS/d' build_firmware_modify
           echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=n" >> build_firmware_modify
 
           sed -i '/CONFIG_FIRMWARE_INCLUDE_V2RAY/d' build_firmware_modify
-          echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=n" >> build_firmware_modify
+          echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=y" >> build_firmware_modify
 
           sed -i '/CONFIG_FIRMWARE_INCLUDE_TROJAN/d' build_firmware_modify
           echo "CONFIG_FIRMWARE_INCLUDE_TROJAN=n" >> build_firmware_modify
