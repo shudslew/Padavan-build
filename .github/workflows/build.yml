@@ -1,0 +1,41 @@
+name: Build Padavan JCG-Q20
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential libncurses5-dev git wget curl unzip bzip2 flex bison autoconf automake libtool pkg-config gawk python2
+      - name: Clone rt-n56u source
+        run: git clone https://github.com/chongshengB/rt-n56u.git
+      - name: Modify plugin config
+        run: |
+          cd rt-n56u/trunk
+          sed -i '/CONFIG_FIRMWARE_INCLUDE_PASSWALL/d' build_firmware_modify
+          echo "CONFIG_FIRMWARE_INCLUDE_PASSWALL=y" >> build_firmware_modify
+
+          sed -i '/CONFIG_FIRMWARE_INCLUDE_ADBYBY/d' build_firmware_modify
+          echo "CONFIG_FIRMWARE_INCLUDE_ADBYBY=y" >> build_firmware_modify
+
+          sed -i '/CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS/d' build_firmware_modify
+          echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=n" >> build_firmware_modify
+
+          sed -i '/CONFIG_FIRMWARE_INCLUDE_V2RAY/d' build_firmware_modify
+          echo "CONFIG_FIRMWARE_INCLUDE_V2RAY=n" >> build_firmware_modify
+
+          sed -i '/CONFIG_FIRMWARE_INCLUDE_TROJAN/d' build_firmware_modify
+          echo "CONFIG_FIRMWARE_INCLUDE_TROJAN=n" >> build_firmware_modify
+          ./clear_tree
+      - name: Compile firmware
+        run: |
+          cd rt-n56u/trunk
+          fakeroot ./build_firmware_modify jcg_q20
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: JCG-Q20-Padavan
+          path: rt-n56u/trunk/images/*.trx
